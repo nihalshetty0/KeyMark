@@ -1,0 +1,24 @@
+https://onlinepngtools.com/add-png-border
+use photopea for resolution
+
+remove 
+
+manifest
+
+"browser_specific_settings": {
+    "gecko": {
+      "id": "{c6aff3f3-2c1e-4bf2-9a21-2402105e95b0}"
+    }
+  }
+
+replace "browser" with "chrome" in background.js and settings and main.js
+
+
+let getting = chrome.storage.sync.get("optionsData");
+getting.then(onGot);
+
+with 
+
+
+let getting = chrome.storage.sync.get(["optionsData"], onGot);
+

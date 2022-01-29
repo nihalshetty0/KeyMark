@@ -1,0 +1,90 @@
+html,
+body {
+  margin: 0;
+  background-color: #202124;
+  display: flex;
+  flex-direction: column;
+  margin: auto;
+  font-family: Sans-serif;
+  text-align: center;
+}
+#title {
+  display: flex;
+  color: white;
+  align-items: center;
+  justify-content: center;
+}
+#title img {
+  height: 50px;
+  width: 50px;
+}
+#title h1 {
+  font-size: 30px;
+  margin-left: 30px;
+}
+form {
+  width: 200px;
+  /* margin-top: 30px; */
+  border: 1px solid #8ab4f8;
+  border-radius: 15px;
+  min-width: 300px;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.container {
+  display: flex;
+  flex-direction: column;
+  /* border: 1px solid red; */
+  width: 100%;
+  padding: 10px 0;
+  border-bottom: 1px solid white;
+  border-radius: 7px;
+}
+#active::before {
+  content: "Add keyword";
+  display: block;
+  color: white;
+  padding-bottom: 10px;
+}
+
+#passive::before {
+  content: "Remove keyword";
+  display: block;
+  color: white;
+  padding-bottom: 10px;
+}
+.draggable {
+  padding: 1rem;
+  background-color: white;
+  border: 1px solid black;
+  cursor: move;
+  width: 85%;
+  margin: auto;
+  /*   border: 1px solid red; */
+  border-radius: 10px;
+  margin: 5px;
+}
+.draggable.dragging {
+  opacity: 0.5;
+}
+button {
+  width: 80%;
+  height: 40px;
+  margin-top: 20px;
+  background-color: skyblue;
+  border: none;
+  border-radius: 10px;
+}
+#msg {
+  display: none;
+  margin-top: 8px;
+  color: white;
+}
+#info {
+  font-size: 15px;
+  margin-bottom: 10px;
+  color: white;
+}
