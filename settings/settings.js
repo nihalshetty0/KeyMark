@@ -42,8 +42,13 @@ function restoreOptions() {
     try {
       const defaultValue = {
         optionsData: {
-          activeOptions: ["reddit", "site:wikipedia.com", "quora"],
-          passiveOptions: ["", ""],
+          activeOptions: [
+            "reddit",
+            "site:wikipedia.com",
+            "quora",
+            "site:producthunt.com",
+          ],
+          passiveOptions: [""],
         },
       };
       if (storedData["optionsData"] == null) {

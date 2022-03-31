@@ -7,9 +7,15 @@ function getParameterByName(name, url) {
     ? ""
     : decodeURIComponent(results[1].replace(/\+/g, " "));
 }
-
-let options = ["reddit", "site:wikipedia.com", "quora"];
-let empty = ["", ""];
+const debug = true;
+let options = [
+  "reddit",
+  "site:wikipedia.com",
+  "quora",
+  "site:producthunt.com",
+  // "site:news.ycombinator.com",
+];
+let empty = [""];
 
 let getting = browser.storage.sync.get(["optionsData"], onGot);
 // getting.then(onGot);
@@ -50,16 +56,15 @@ setTimeout(() => {
   // append extContainer to google body
   if (rhs !== null) {
     rhs.prepend(extContainer);
-    rhs.style.marginLeft = "882px";
+    // rhs.style.marginLeft = "882px";
+    if (debug) console.log("rhs");
   } else {
-    document.querySelector(".D6j0vc").prepend(extContainer);
+    document.querySelector("#center_col").prepend(extContainer);
     center_col_style = getComputedStyle(center_col);
     extContainer.style.position = "absolute";
     extContainer.style.left =
-      parseInt(center_col_style.marginLeft.replace("px", "")) +
-      parseInt(center_col_style.width.replace("px", "")) +
-      50 +
-      "px";
+      // parseInt(center_col_style.marginLeft.replace("px", "")) +
+      parseInt(center_col_style.width.replace("px", "")) + 50 + "px";
   }
 
   // add options to extContainer
@@ -130,13 +135,7 @@ setTimeout(() => {
       const img = document.createElement("img");
       img.setAttribute("src", chrome.runtime.getURL("images/empty.svg"));
       const h1 = document.createElement("h1");
-      const joke = [
-        "Maybe you are onto something",
-        // "Hmm... Maybe you are asking questions, you are not supposed to.",
-      ];
-      h1.textContent =
-        "Nothing found here\n" + joke[Math.floor(Math.random() * joke.length)];
-
+      h1.textContent = "Nothing found here\n Maybe you are onto something";
       const optionBody = document.createElement("div");
 
       optionBody.append(h1);

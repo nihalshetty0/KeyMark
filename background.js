@@ -5,8 +5,13 @@ function listener() {
     if (storedData["optionsData"] == null) {
       browser.storage.sync.set({
         optionsData: {
-          activeOptions: ["reddit", "site:wikipedia.com", "quora"],
-          passiveOptions: ["", ""],
+          activeOptions: [
+            "reddit",
+            "site:wikipedia.com",
+            "quora",
+            "site:producthunt.com",
+          ],
+          passiveOptions: [""],
         },
       });
     }
