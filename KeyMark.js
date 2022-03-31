@@ -7,7 +7,7 @@ function getParameterByName(name, url) {
     ? ""
     : decodeURIComponent(results[1].replace(/\+/g, " "));
 }
-const debug = true;
+const debug = false;
 let options = [
   "reddit",
   "site:wikipedia.com",
