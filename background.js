@@ -1,23 +1,18 @@
-browser.browserAction.onClicked.addListener(listener);
+chrome.action.onClicked.addListener(listener);
 
 function listener() {
   const foo = (storedData) => {
     if (storedData["optionsData"] == null) {
-      browser.storage.sync.set({
+      chrome.storage.sync.set({
         optionsData: {
-          activeOptions: [
-            "reddit",
-            "site:wikipedia.com",
-            "quora",
-            "site:producthunt.com",
-          ],
-          passiveOptions: [""],
+          activeOptions: ["reddit", "quora", "site:wikipedia.com"],
+          passiveOptions: ["" ,""],
         },
       });
     }
   };
-  let getting = browser.storage.sync.get(["optionsData"], foo);
-  browser.tabs.create({
-    url: browser.runtime.getURL("settings/settings.html"),
+  let getting = chrome.storage.sync.get(["optionsData"], foo);
+  chrome.tabs.create({
+    url: chrome.runtime.getURL("settings/settings.html"),
   });
 }

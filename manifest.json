@@ -1,32 +1,29 @@
 {
-  "manifest_version": 2,
+  "manifest_version": 3,
   "name": "KeyMark",
-  "version": "0.0.7",
+  "version": "0.0.8",
 
-  "description": "Mark important keyword for every google search. Get the non-SEO results",
+  "description": "Get answers from favorite websites with every google search",
 
   "icons": {
-    "48": "icons/48.jpg",
-    "96": "icons/96.jpg",
-    "128": "icons/128.jpg"
+    "128": "icons/128.png"
   },
 
-  "permissions": [
-    "storage"
-  ],
+  "permissions": ["storage"],
 
   "content_scripts": [
     {
       "matches": ["*://*.google.com/*"],
       "js": ["KeyMark.js"],
-      "css":["style.css"]
+      "css": ["style.css"]
     }
   ],
-  "web_accessible_resources": [
-    "images/*.svg"
-  ],
-  "browser_action": {
-    "default_icon": "icons/96-16.png",
+  "web_accessible_resources": [{ 
+    "resources": ["/images/empty.svg"],
+    "matches": ["*://*/*"]
+  }],
+  "action": {
+    "default_icon": "icons/128.png",
     "default_title": "KeyMark"
   },
   "options_ui": {
@@ -34,11 +31,6 @@
     "open_in_tab": true
   },
   "background": {
-    "scripts": ["background.js"]
-  },
-  "browser_specific_settings": {
-    "gecko": {
-      "id": "{c6aff3f3-2c1e-4bf2-9a21-2402105e95b0}"
-    }
+    "service_worker": "background.js"
   }
 }

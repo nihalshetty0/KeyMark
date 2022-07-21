@@ -11,6 +11,30 @@ manifest
     }
   }
 
+
+for firefox
+
+"web_accessible_resources": [
+    "images/*.svg"
+  ],
+  "browser_action": {
+    "default_icon": "icons/96-16.png",
+    "default_title": "KeyMark"
+  },
+  "options_ui": {
+    "page": "settings/settings.html",
+    "open_in_tab": true
+  },
+  "background": {
+    "scripts": ["background.js"]
+  },
+  "browser_specific_settings": {
+    "gecko": {
+      "id": "{c6aff3f3-2c1e-4bf2-9a21-2402105e95b0}"
+    }
+  }
+
+
 replace "browser" with "chrome" in background.js and settings and main.js
 
 
@@ -22,3 +46,11 @@ with
 
 let getting = chrome.storage.sync.get(["optionsData"], onGot);
 
+
+____________
+
+browser.browserAction.onClicked
+
+with
+
+chrome.action.onClicked

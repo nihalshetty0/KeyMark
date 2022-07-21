@@ -1,4 +1,3 @@
-// You saw what the best SEO had to say. Now read what common folks have to say.
 function getParameterByName(name, url) {
   name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
   var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
@@ -10,20 +9,21 @@ function getParameterByName(name, url) {
 const debug = false;
 let options = [
   "reddit",
-  "site:wikipedia.com",
   "quora",
-  "site:producthunt.com",
+  "site:wikipedia.com",
+  // "site:producthunt.com",
   // "site:news.ycombinator.com",
 ];
-let empty = [""];
+let empty = ["" , ""];
 
-let getting = browser.storage.sync.get(["optionsData"], onGot);
+let getting = chrome.storage.sync.get(["optionsData"], onGot);
 // getting.then(onGot);
 
 function onGot(item) {
+  console.log(options, empty)
   if (item["optionsData"] == null) {
     // console.log("set");
-    browser.storage.sync.set({
+    chrome.storage.sync.set({
       optionsData: { activeOptions: options, passiveOptions: empty },
     });
   } else {

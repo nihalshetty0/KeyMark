@@ -1,0 +1,18 @@
+-Chrome Extension: What do fellow internet user's have to say about your google searches
+
+get suggestions and answers from people of the internet on every google search and be enlightened
+
+customize website list from where results are to be fetched
+
+notice how google returns websites with top SEO and the extension get answers from common internet folks
+
+what is metaverse
+
+r/productivity
+
+Sites like Reddit and Quora have more diverse answers to your question answered by different people with diverse opinion and expirences. You are better server by millions of people and their expirence than a sole blogger to satisfy your curiosity. 
+This is what Keymark extension/add-on does. The extension aggregates answers from your favorite websites and shows it along side google search. This way everytime you search on google, you get posts from your favorite websites.
+
+Not satisfied with google's result for your question? Try Keymark which brings you post from your favorite websites. 
+
+So every time you google, KeyMark also presents you with posts from pinned websites that you might find interesting.

@@ -20,7 +20,7 @@ function saveOptions(e) {
     passiveOptions,
   };
   console.log(optionsData);
-  browser.storage.sync.set({
+  chrome.storage.sync.set({
     optionsData,
   });
   setCurrentChoice({ optionsData: { activeOptions, passiveOptions } });
@@ -42,13 +42,8 @@ function restoreOptions() {
     try {
       const defaultValue = {
         optionsData: {
-          activeOptions: [
-            "reddit",
-            "site:wikipedia.com",
-            "quora",
-            "site:producthunt.com",
-          ],
-          passiveOptions: [""],
+          activeOptions: ["reddit", "quora", "site:wikipedia.com"],
+          passiveOptions: ["", ""],
         },
       };
       if (storedData["optionsData"] == null) {

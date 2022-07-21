@@ -1,0 +1,17 @@
+Get reddit post with every google search.
+
+For every google search get post from your interesting website.
+
+Browser Extension: Get reddit post with every google search.
+
+Not satisfied with google's result for your question? Try Keymark extension which brings you post from your favorite websites.
+
+So every time you google, KeyMark also presents you with posts from pinned websites that you might find interesting.
+.............................
+
+ Browser Extension: Get reddit post with every google search. 
+
+Checkout this Chrome/Firefox extension that shows reddit posts on google search page. This extension shows relevant reddit post every time you google something.
+
+The idea is to add any website of your liking. Here I have used reddit as an example. I have found some pretty interesting reddit links/post this way when googling with the extension. 
+Say you are a graphic designer and you have a forum website that helps with graphic design problems. You might add it to the extension menu and the extension gets the relevant post from that website every time you google. 
