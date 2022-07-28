@@ -6,13 +6,13 @@ function listener() {
       chrome.storage.sync.set({
         optionsData: {
           activeOptions: ["reddit", "quora", "site:wikipedia.com"],
-          passiveOptions: ["" ,""],
+          passiveOptions: ["", ""],
         },
       });
     }
   };
   let getting = chrome.storage.sync.get(["optionsData"], foo);
-  chrome.tabs.create({
-    url: chrome.runtime.getURL("settings/settings.html"),
-  });
+  // chrome.tabs.create({
+  //   url: chrome.runtime.getURL("settings/settings.html"),
+  // });
 }

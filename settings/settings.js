@@ -69,6 +69,7 @@ function setCurrentChoice({ optionsData }) {
     input.classList.add("draggable");
     input.setAttribute("draggable", "true");
     input.setAttribute("maxlength", "50");
+    input.setAttribute("placeholder", "Add website/keywords");
     input.addEventListener("dragstart", () => {
       input.classList.add("dragging");
     });
@@ -88,6 +89,7 @@ function setCurrentChoice({ optionsData }) {
     const input = document.createElement("input");
     input.classList.add("draggable");
     input.setAttribute("draggable", "true");
+    input.setAttribute("placeholder", "Add website/keyword");
     input.addEventListener("dragstart", () => {
       input.classList.add("dragging");
     });
