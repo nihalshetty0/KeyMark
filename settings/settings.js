@@ -1,29 +1,45 @@
-function saveOptions(e) {
-  e.preventDefault();
-  let activeOptions = [];
-  let passiveOptions = [];
+const ON_INSTALL_PINS = ["reddit", "twitter", "site:wikipedia.com"];
+const TOTAL_PINS = 5;
+const LOCAL_STORE_KEY = "USERPINS";
+let SUGGESTED_PINS = ["producthunt", "hackernews"];
+let activePins = ON_INSTALL_PINS;
+let passivePins = Array(TOTAL_PINS - activePins.length).fill("");
+
+const savePinsToLocal = (e) => {
+  if (e) e.preventDefault();
+  let newActivePins = [];
+  let newPassivePins = [];
+  let emptyStringInPassive = [];
+
   const active = document.querySelector("#active");
   const activeElements = active.childNodes;
+  // get user set preferrence from popup
   activeElements.forEach((ele) => {
-    if (ele.value.trim() == "") passiveOptions.push(ele.value);
-    else activeOptions.push(ele.value);
+    if (ele.value.trim() === "") emptyStringInPassive.push(ele.value);
+    else newActivePins.push(ele.value);
   });
+
+  // Array.prototype.move = function (from, to) {
+  //   this.splice(to, 0, this.splice(from, 1)[0]);
+  // };
 
   const passive = document.querySelector("#passive");
-  const passiveElements = passive.childNodes;
+  let passiveElements = passive.childNodes;
   passiveElements.forEach((ele) => {
-    passiveOptions.push(ele.value);
+    if (ele.value.trim() === "") emptyStringInPassive.push("");
+    else newPassivePins.push(ele.value);
   });
+  newPassivePins = newPassivePins.concat(emptyStringInPassive);
 
-  const optionsData = {
-    activeOptions,
-    passiveOptions,
-  };
-  console.log(optionsData);
+  // passiveElements.move()
+
   chrome.storage.sync.set({
-    optionsData,
+    [LOCAL_STORE_KEY]: {
+      activePins: newActivePins,
+      passivePins: newPassivePins,
+    },
   });
-  setCurrentChoice({ optionsData: { activeOptions, passiveOptions } });
+  constructPopup({ activePins: newActivePins, passivePins: newPassivePins });
   const btn = document.querySelector("button");
   btn.innerText = "Saved";
   btn.style.backgroundColor = "#4CAF50";
@@ -31,76 +47,93 @@ function saveOptions(e) {
     btn.innerText = "Confirm";
     btn.style.backgroundColor = "#8ab4f8";
   }, 1500);
-}
+};
 
-function restoreOptions() {
-  function onError(error) {
-    console.log(`Error: ${error}`);
+const onError = (error) => {
+  console.log(`Error: ${error}`);
+};
+const onStoredPinsFetched = (store) => {
+  if (!store[LOCAL_STORE_KEY]) {
+    constructPopup({ activePins, passivePins });
+  } else {
+    constructPopup({ ...store[LOCAL_STORE_KEY] });
   }
+  try {
+  } catch (error) {
+    onError(error);
+  }
+};
 
-  const foo = (storedData) => {
-    try {
-      const defaultValue = {
-        optionsData: {
-          activeOptions: ["reddit", "quora", "site:wikipedia.com"],
-          passiveOptions: ["", ""],
-        },
-      };
-      if (storedData["optionsData"] == null) {
-        setCurrentChoice(defaultValue);
-      }
-      setCurrentChoice(storedData);
-    } catch (error) {
-      onError(error);
-    }
-  };
-  // onError;
-  let getting = chrome.storage.sync.get(["optionsData"], foo);
-}
-function setCurrentChoice({ optionsData }) {
-  const { activeOptions, passiveOptions } = optionsData;
-  // const { activeOptions } = optionsData;
+const restoreOptions = () => {
+  chrome.storage.sync.get(LOCAL_STORE_KEY, onStoredPinsFetched);
+};
+
+function constructPopup({ activePins, passivePins }) {
+  console.log(activePins, passivePins);
   const active = document.querySelector("#active");
   while (active.firstChild) {
     active.firstChild.remove();
   }
-  activeOptions.forEach((o) => {
-    const input = document.createElement("input");
-    input.classList.add("draggable");
-    input.setAttribute("draggable", "true");
-    input.setAttribute("maxlength", "50");
-    input.setAttribute("placeholder", "Add website/keywords");
-    input.addEventListener("dragstart", () => {
-      input.classList.add("dragging");
-    });
 
-    input.addEventListener("dragend", () => {
-      input.classList.remove("dragging");
+  constructPins(activePins, active);
+
+  const suggested = document.getElementById("suggested");
+  while (suggested.firstChild) {
+    suggested.firstChild.remove();
+  }
+  let suggested_pins_filtered = SUGGESTED_PINS.filter(
+    (eachPin) => !activePins.includes(eachPin)
+  );
+  console.log(SUGGESTED_PINS);
+  suggested_pins_filtered = suggested_pins_filtered.filter(
+    (eachPin) => !passivePins.includes(eachPin)
+  );
+
+  if (suggested_pins_filtered.length !== 0) {
+    const suggestedTitle = document.createElement("div");
+    suggestedTitle.classList.add("title", "chip");
+    suggestedTitle.innerHTML = "Try:";
+    suggested.append(suggestedTitle);
+    console.log(SUGGESTED_PINS);
+
+    suggested_pins_filtered.forEach((pin) => {
+      const pinBtn = document.createElement("div");
+      pinBtn.classList.add("chip");
+      pinBtn.innerHTML = pin;
+      pinBtn.addEventListener("click", () => {
+        activePins.push(pin);
+        passivePins.pop();
+        constructPopup({ activePins, passivePins });
+        savePinsToLocal();
+      });
+      suggested.append(pinBtn);
     });
-    input.value = o;
-    active.appendChild(input);
-  });
+  }
 
   const passive = document.querySelector("#passive");
   while (passive.firstChild) {
     passive.firstChild.remove();
   }
-  passiveOptions.forEach((o) => {
-    const input = document.createElement("input");
-    input.classList.add("draggable");
-    input.setAttribute("draggable", "true");
-    input.setAttribute("placeholder", "Add website/keyword");
-    input.addEventListener("dragstart", () => {
-      input.classList.add("dragging");
-    });
+  constructPins(passivePins, passive);
 
-    input.addEventListener("dragend", () => {
-      input.classList.remove("dragging");
-    });
+  function constructPins(pinsArray, target) {
+    pinsArray.forEach((eachPin) => {
+      const input = document.createElement("input");
+      input.classList.add("draggable");
+      input.setAttribute("draggable", "true");
+      input.setAttribute("maxlength", "50");
+      input.setAttribute("placeholder", "Add website/keywords");
+      input.addEventListener("dragstart", () => {
+        input.classList.add("dragging");
+      });
 
-    input.value = o;
-    passive.appendChild(input);
-  });
+      input.addEventListener("dragend", () => {
+        input.classList.remove("dragging");
+      });
+      input.value = eachPin;
+      target.appendChild(input);
+    });
+  }
 }
 
 const containers = document.querySelectorAll(".container");
@@ -138,4 +171,4 @@ function getDragAfterElement(container, y) {
 }
 
 document.addEventListener("DOMContentLoaded", restoreOptions);
-document.querySelector("form").addEventListener("submit", saveOptions);
+document.querySelector("form").addEventListener("submit", savePinsToLocal);

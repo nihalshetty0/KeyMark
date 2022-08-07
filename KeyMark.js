@@ -1,49 +1,44 @@
-function getParameterByName(name, url) {
+const ON_INSTALL_PINS = ["reddit", "twitter", "site:wikipedia.com"];
+const TOTAL_PINS = 5;
+const LOCAL_STORE_KEY = "USERPINS";
+const debug = false;
+
+const getQueryParameter = (name, url) => {
   name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
   var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
     results = regex.exec(url);
   return results == null
     ? ""
     : decodeURIComponent(results[1].replace(/\+/g, " "));
-}
-const debug = false;
-let options = [
-  "reddit",
-  "quora",
-  "site:wikipedia.com",
-  // "site:producthunt.com",
-  // "site:news.ycombinator.com",
-];
-let empty = ["" , ""];
+};
 
-let getting = chrome.storage.sync.get(["optionsData"], onGot);
-// getting.then(onGot);
+let activePins = ON_INSTALL_PINS;
+let passivePins = Array(TOTAL_PINS - activePins.length).fill("");
 
-function onGot(item) {
-  console.log(options, empty)
-  if (item["optionsData"] == null) {
-    // console.log("set");
+const onStoredPinsFetched = (store) => {
+  if (!store[LOCAL_STORE_KEY]) {
     chrome.storage.sync.set({
-      optionsData: { activeOptions: options, passiveOptions: empty },
+      [LOCAL_STORE_KEY]: { activePins, passivePins },
     });
   } else {
-    options = item.optionsData["activeOptions"];
+    activePins = store[LOCAL_STORE_KEY].activePins;
   }
-}
+};
 
-// console.log(options);
+chrome.storage.sync.get(LOCAL_STORE_KEY, onStoredPinsFetched);
+
 let parser = new DOMParser();
 
 setTimeout(() => {
-  let keyword = getParameterByName("q", window.location.href).trim();
+  let keyword = getQueryParameter("q", window.location.href).trim();
 
-  options.forEach((option) => {
+  activePins.forEach((option) => {
     // remove option from option array
     if (keyword.toLowerCase().includes(option)) {
-      options = options.filter((o) => o != option);
+      activePins = activePins.filter((o) => o != option);
     }
     // removes option value from keyword, if any
-    keyword = keyword.replace(" " + option + " ", "");
+    // keyword = keyword.replace(" " + option + " ", "");
   });
 
   let center_col = document.querySelector("#center_col");
@@ -63,42 +58,50 @@ setTimeout(() => {
     center_col_style = getComputedStyle(center_col);
     extContainer.style.position = "absolute";
     extContainer.style.left =
-      // parseInt(center_col_style.marginLeft.replace("px", "")) +
       parseInt(center_col_style.width.replace("px", "")) + 50 + "px";
+    // parseInt(center_col_style.marginLeft.replace("px", "")) +
   }
 
-  // add options to extContainer
-  let optionArray = document.createElement("div");
-  optionArray.classList.add("optionArray");
-  // if (rhs) optionArray.style.top = "6px";
+  // add activePins to extContainer
+  let activePinTray = document.createElement("div");
+  activePinTray.classList.add("activePinTray");
+  // if (rhs) activePinTray.style.top = "6px";
 
-  options.forEach((option) => {
+  // construct activepin buttons
+  activePins.forEach((option) => {
     let button = document.createElement("a");
     button.innerText =
       20 < option.length ? option.substring(0, 20) + "....." : option;
     button.classList.add("btn");
 
     button.setAttribute("id", option);
-    optionArray.appendChild(button);
-  });
-
-  extContainer.prepend(optionArray);
-
-  options.forEach((option) => {
-    const optionBtn = document.getElementById(option);
-    optionBtn.onclick = () => {
-      optionArray.childNodes.forEach((o) => {
+    button.onclick = () => {
+      activePinTray.childNodes.forEach((o) => {
         o.classList.remove("btn-active");
       });
-      optionBtn.classList.add("btn-active");
+      button.classList.add("btn-active");
       fetchResult(keyword, option);
     };
+    activePinTray.appendChild(button);
   });
 
-  function fetchResult(keyword, option) {
+  extContainer.prepend(activePinTray);
+
+  // activePins.forEach((option) => {
+  //   const optionBtn = document.getElementById(option);
+  //   optionBtn.onclick = () => {
+  //     activePinTray.childNodes.forEach((o) => {
+  //       o.classList.remove("btn-active");
+  //     });
+  //     optionBtn.classList.add("btn-active");
+  //     fetchResult(keyword, option);
+  //   };
+  // });
+
+  const fetchResult = (keyword, option) => {
     let flag = 0;
     extContainer.childNodes.forEach((child) => {
-      if (child.className != "optionArray") child.style.display = "none";
+      if (child.className != "activePinTray") child.style.display = "none";
       if (child.className.includes(option.replace(/\s+/g, "-")) == true) {
         child.style.display = "block";
         flag = 1;
@@ -116,9 +119,9 @@ setTimeout(() => {
           constructRightBody(result, option);
         });
     }
-  }
+  };
 
-  function constructRightBody(result, option) {
+  const constructRightBody = (result, option) => {
     extContainer.childNodes.forEach((child) => {
       if (child.className.includes(option.replace(/\s+/g, "-"))) {
         // console.log(child.className);
@@ -182,9 +185,9 @@ setTimeout(() => {
     topSearchBtn.classList.add("topSearchBtn");
     // search.prepend(topSearchBtn);
     extContainer.append(search);
-  }
-  optionArray.childNodes[0].classList.add("btn-active");
-  fetchResult(keyword, (option = options[0]));
+  };
+  activePinTray.childNodes[0].classList.add("btn-active");
+  fetchResult(keyword, (option = activePins[0]));
 }, 50);
 
 function createSearchBtn(keyword, option) {

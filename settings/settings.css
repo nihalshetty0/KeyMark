@@ -1,4 +1,7 @@
 /* https://cdn.dribbble.com/userupload/2418609/file/original-01f79871a7fe4502b9ed8eb0feeca658.png?compress=1&resize=1504x1128&vertical=center */
+*,*::after,*::before{
+  box-sizing: border-box;
+}
 html,
 body {
   margin: 0;
@@ -14,6 +17,7 @@ body {
   justify-content: center;
   align-items: center;
   align-content: center;
+  width: 400px;
 }
 #title {
   display: flex;
@@ -35,23 +39,26 @@ body {
   color: white;
 }
 form {
-  /* width: 200px; */
+  width: 100%;
   /* margin-top: 30px; */
   /* border: 1px solid #8ab4f8; */
   border-radius: 15px;
   min-width: 250px;
-  padding: 10px;
+  padding: 15px;
+  padding-bottom: 20px;
   display: flex;
+  /* border: 5px solid red; */
   flex-direction: column;
-  justify-content: center;
-  align-items: center;
+  padding: 1em;
+  /* justify-content: center;
+  align-items: center; */
 }
 .container {
   display: flex;
   flex-direction: column;
   /* border: 1px solid red; */
   width: 100%;
-  font-size: small;
+  font-size: 16px;
   padding: 10px 0;
   /* border-bottom: 1px solid white; */
   /* border-radius: 7px; */
@@ -59,15 +66,45 @@ form {
 #active::before {
   content: "Add keyword";
   display: block;
-  color: white;
   padding-bottom: 5px;
+  width: min-content;
+  white-space: nowrap;
+  color: #a6adb4;
+  font-weight: 600;
 }
 
 #passive::before {
   content: "Remove keyword";
   display: block;
-  color: white;
   padding-bottom: 5px;
+  width: min-content;
+  white-space: nowrap;
+  color: #a6adb4;
+  font-weight: 600;
+}
+
+#suggested{
+  display: flex;
+  flex-wrap: wrap;
+  color: #edeff1;
+  font-size:15px;
+  align-items: center;
+  margin-bottom: 10px;
+}
+#suggested .chip{
+  background: #2d2f33;
+  padding: 0.3rem 0.4rem;
+  border-radius: 8px;
+  cursor: pointer;
+  margin-right: 5px;
+  margin-top: 6px;
+}
+#suggested .title{
+  font-weight: 600;
+  color: #a6adb4;
+  background-color: inherit;
+  cursor: default;
+  margin-right: 5px;
 }
 .draggable {
   padding: 0.3rem 0.5rem;
@@ -76,17 +113,17 @@ form {
   border: 1px solid #2d2f33;
   cursor: move;
   /* width: 85%; */
-  margin: auto;
+  font-size: 16px;
   color: #edeff1;
   /*   border: 1px solid red; */
   border-radius: 6px;
-  margin: 5px;
+  margin: 5px 0px;
 }
 .draggable.dragging {
   opacity: 0.5;
 }
 button {
-  width: 90%;
+  width: 100%;
   height: 30px;
   /* margin-top: 10px; */
   background-color: skyblue;
