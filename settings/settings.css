@@ -17,11 +17,11 @@ body {
   justify-content: center;
   align-items: center;
   align-content: center;
-  width: 400px;
+  width: 360px;
 }
 #title {
   display: flex;
-  color: white;
+  color: #a6adb4;
   align-items: center;
   justify-content: center;
 }
@@ -44,12 +44,11 @@ form {
   /* border: 1px solid #8ab4f8; */
   border-radius: 15px;
   min-width: 250px;
-  padding: 15px;
-  padding-bottom: 20px;
   display: flex;
   /* border: 5px solid red; */
   flex-direction: column;
   padding: 1em;
+  padding-top: 0px;
   /* justify-content: center;
   align-items: center; */
 }
@@ -64,23 +63,23 @@ form {
   /* border-radius: 7px; */
 }
 #active::before {
-  content: "Add keyword";
+  content: "Add websites";
   display: block;
   padding-bottom: 5px;
   width: min-content;
   white-space: nowrap;
   color: #a6adb4;
-  font-weight: 600;
+  /* font-weight: 600; */
 }
 
 #passive::before {
-  content: "Remove keyword";
+  content: "Remove websites";
   display: block;
   padding-bottom: 5px;
   width: min-content;
   white-space: nowrap;
   color: #a6adb4;
-  font-weight: 600;
+  /* font-weight: 600; */
 }
 
 #suggested{
@@ -107,26 +106,27 @@ form {
   margin-right: 5px;
 }
 .draggable {
-  padding: 0.3rem 0.5rem;
+  padding: 0.5rem 0.6rem;
   border: 1px solid red;
   background-color: #2d2f33;
   border: 1px solid #2d2f33;
   cursor: move;
-  /* width: 85%; */
   font-size: 16px;
   color: #edeff1;
-  /*   border: 1px solid red; */
-  border-radius: 6px;
+  border-radius: 8px;
   margin: 5px 0px;
+}
+.draggable:focus{
+  border: 1px solid red;
 }
 .draggable.dragging {
   opacity: 0.5;
 }
 button {
   width: 100%;
-  height: 30px;
+  height: 35px;
   /* margin-top: 10px; */
-  background-color: skyblue;
+  background-color: #8ab4f8;
   border: none;
   border-radius: 8px;
   cursor: pointer;
@@ -135,4 +135,20 @@ button {
   display: none;
   /* margin-top: 8px; */
   color: white;
+}
+
+#secondary-actions{
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+  /* flex-direction: row; */
+  /* border: 1px solid red; */
+  width: 100%;
+  padding: 1em;
+  padding-top: 0;
+  /* flex */
+}
+#secondary-actions button{
+  background-color: #2d2f33; 
+  color: #edeff1;
 }
