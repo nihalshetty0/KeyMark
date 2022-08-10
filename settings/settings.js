@@ -19,10 +19,6 @@ const savePinsToLocal = (e) => {
     else newActivePins.push(ele.value);
   });
 
-  // Array.prototype.move = function (from, to) {
-  //   this.splice(to, 0, this.splice(from, 1)[0]);
-  // };
-
   const passive = document.querySelector("#passive");
   let passiveElements = passive.childNodes;
   passiveElements.forEach((ele) => {
@@ -30,8 +26,6 @@ const savePinsToLocal = (e) => {
     else newPassivePins.push(ele.value);
   });
   newPassivePins = newPassivePins.concat(emptyStringInPassive);
-
-  // passiveElements.move()
 
   chrome.storage.sync.set({
     [LOCAL_STORE_KEY]: {
